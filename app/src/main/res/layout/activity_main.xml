@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:background="@color/screenBackground"
-    tools:context="com.example.dell.battleship.MainActivity">
+    tools:context="com.example.dell.battleship.activities.MainActivity">
 
     <TextView
         android:id="@+id/message"

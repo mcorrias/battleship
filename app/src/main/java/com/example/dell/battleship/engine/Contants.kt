@@ -1,4 +1,4 @@
-package com.example.dell.battleship
+package com.example.dell.battleship.engine
 
 /**
  * Created by Dell on 05/03/2018.

@@ -1,16 +1,16 @@
-package com.example.dell.battleship
+package com.example.dell.battleship.activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.constraint.ConstraintLayout
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TableRow
+import com.example.dell.battleship.engine.Game
+import com.example.dell.battleship.R
 import kotlinx.android.synthetic.main.activity_game.*
 
 class GameActivity : AppCompatActivity() {
 
-    val newGame :Game = Game(this)
+    val newGame : Game = Game(this)
     val rows  = 10
     val colums = 10
 
