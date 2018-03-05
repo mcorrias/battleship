@@ -24,6 +24,7 @@ class GameActivity : AppCompatActivity() {
         var colums = 8
 
 
+
         for(i in 0..rows){
             var row = TableRow(this)
             for(j in 0..colums){
