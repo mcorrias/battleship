@@ -6,4 +6,9 @@
     <color name="screenBackground">#2196F3</color>
     <color name="screenBackground2">#26C6DA</color>
     <color name="buttonBackground">#BBDEFB</color>
+    <color name="colorCarrier">#F57F17</color>
+    <color name="colorBattleShip">#FBC02D</color>
+    <color name="colorCruiser">#FFEB3B</color>
+    <color name="colorDestroyer">#FFF176</color>
+    <color name="colorSubmarine">#FFF9C4</color>
 </resources>
