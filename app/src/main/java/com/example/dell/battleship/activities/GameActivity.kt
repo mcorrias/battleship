@@ -38,12 +38,10 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun attack(x:Int , y:Int, item: ImageButton){
-        var hasHit = newGame.attack(x,y)
-        if(hasHit){
-            item.setBackgroundResource(R.drawable.item_hit)
-        }
-        else {
-            item.setBackgroundResource(R.drawable.item_missed)
-        }
+        var resource = newGame.attack(x,y)
+
+        item.setBackgroundResource(resource)
+
+
     }
 }

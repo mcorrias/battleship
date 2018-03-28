@@ -6,11 +6,12 @@ import com.example.dell.battleship.R
 /**
  * Created by Dell on 08/03/2018.
  */
-class Ship(var type: String, var size: Int, @Transient val context: Context) {
+class Ship(var type: String, var size: Int, var isHorizontal: Boolean, @Transient val context: Context) {
 
-    val isHorizontal: Boolean = false
-    val state:Int = 0
-    lateinit var coordinates: Array<Pair<Int,Int>>
+    val isItHorizontal: Boolean = isHorizontal
+    val state: Int = 0
+    val shipSize = size
+    var coordinates: Array<Pair<Int,Int>?> = arrayOfNulls<Pair<Int,Int>>(size)
     lateinit var coordinatesHit: Array<Pair<Int,Int>>
     var hitNumbers: Int = 0
 
