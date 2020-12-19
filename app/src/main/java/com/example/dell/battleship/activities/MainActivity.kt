@@ -16,8 +16,4 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun launchGame(view: View){
-        val gameIntent = Intent(this, GameActivity::class.java)
-        startActivity(gameIntent)
-    }
 }
