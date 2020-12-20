@@ -2,20 +2,12 @@ package com.example.dell.battleship.engine
 
 import android.content.Context
 import com.example.dell.battleship.R
-import com.example.dell.battleship.R.id.board
-import com.example.dell.battleship.engine.Constants.Companion.EMPTY
-import com.example.dell.battleship.engine.Constants.Companion.SHIP
+import com.example.dell.battleship.engine.ships.*
 import java.util.*
 
 /**
  * Created by Dell on 05/03/2018.
  */
-const val carrier: String = "carrier"//size five
-const val battleShip: String = "battleship"//size four
-const val cruiser: String = "cruiser"//size three
-const val destroyer: String = "destroyer"//size two
-const val submarine: String = "submarine"//size one
-
 
 class Game(@Transient val context: Context){
 
@@ -27,50 +19,50 @@ class Game(@Transient val context: Context){
     var ships: MutableList<Ship> = mutableListOf()
 
 
-    public fun initGame(rows:Int, columns:Int){
+    fun initGame(rows:Int, columns:Int){
         rowsNumber = rows
         columnsNumber = columns
         placeRandomShips()
     }
 
-    public fun attack(x:Int,y:Int) : Int{
+    fun attack(x:Int,y:Int) : Int{
 
         for( ship in ships ){
             if( ship.coordinates.contains( Pair(x,y) ) ){
-                return ship.getResourceId()
+                return ship.getResourceId(gameContext)
             }
         }
         return R.drawable.item_missed
     }
 
     private fun placeRandomShips(){
-        placeRandomShip(5, carrier)
-        placeRandomShip(4, battleShip)
-        placeRandomShip(3, cruiser)
-        placeRandomShip(2, destroyer)
-        placeRandomShip(2, destroyer)
-        placeRandomShip(1, submarine)
-        placeRandomShip(1, submarine)
+        placeRandomShip(Carrier())
+        placeRandomShip(Battleship())
+        placeRandomShip(Cruiser())
+        placeRandomShip(Destroyer())
+        placeRandomShip(Destroyer())
+        placeRandomShip(Submarine())
+        placeRandomShip(Submarine())
     }
 
-    private fun placeRandomShip(size: Int , type:String){
+    private fun placeRandomShip(ship : Ship){
 
         val isHorizontal: Boolean = (random.nextInt() % 2) != 0
-        val topLeftX = getRandomCoordinate(isHorizontal,columnsNumber-size,rowsNumber)
-        val topLeftY = getRandomCoordinate(isHorizontal,rowsNumber,columnsNumber-size)
+        val columnsBound = columnsNumber-ship.size
+        val topLeftX = getRandomCoordinate(isHorizontal,columnsBound,rowsNumber)
+        val topLeftY = getRandomCoordinate(isHorizontal,rowsNumber,columnsBound)
 
-        var isClear = checkIfThereIsRoom(size , isHorizontal , topLeftX , topLeftY)
+        var isClear = checkIfThereIsRoom(ship.size , isHorizontal , topLeftX , topLeftY)
 
         if (isClear) {
-            val newShip = Ship(type, size, isHorizontal, gameContext)
-            for (i in 0..(size-1) ) {
+            for (i in 0..(ship.size-1) ) {
                 val x = if (isHorizontal) topLeftX + i else topLeftX
                 val y = if (isHorizontal) topLeftY else topLeftY + i
-                newShip.coordinates[i] = Pair(x,y)
+                ship.coordinates[i] = Pair(x,y)
             }
-            ships.add(newShip)
+            ships.add(ship)
         } else {
-            placeRandomShip(size, type)
+            placeRandomShip(ship)
         }
     }
 
