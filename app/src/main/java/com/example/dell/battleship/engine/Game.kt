@@ -25,10 +25,10 @@ class Game(@Transient val context: Context){
         placeRandomShips()
     }
 
-    fun attack(x:Int,y:Int) : Int{
+    fun attack(attackedCell : Pair<Int, Int>) : Int{
 
         for( ship in ships ){
-            if( ship.coordinates.contains( Pair(x,y) ) ){
+            if( ship.coordinates.contains( attackedCell ) ){
                 return ship.getResourceId(gameContext)
             }
         }
