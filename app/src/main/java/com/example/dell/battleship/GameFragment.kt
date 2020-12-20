@@ -15,8 +15,9 @@ class GameFragment : Fragment() {
 
     lateinit var newGame: Game
     lateinit var binding : FragmentGameBinding
-    val rows = 10
-    val columns = 10
+    private val rows = 10
+    private val columns = 10
+    private var movesCount = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -40,7 +41,8 @@ class GameFragment : Fragment() {
                 val item: ImageButton = ImageButton(requireContext())
                 item.setBackgroundResource(R.drawable.item_drawable)
                 item.setOnClickListener() {
-                    attack(i, j, item)
+                    val cellPosition = Pair(i,j)
+                    attack(cellPosition, item)
                 }
                 row.addView(item)
             }
@@ -48,9 +50,14 @@ class GameFragment : Fragment() {
         }
     }
 
-    private fun attack(x: Int, y: Int, item: ImageButton) {
-        var resource = newGame.attack(x, y)
+    private fun attack(cellPosition : Pair<Int,Int>, item: ImageButton) {
+       changeAttackedCellColor(cellPosition,item)
+       movesCount++
+       binding.movesCountText.text = movesCount.toString()
+    }
 
+    private fun changeAttackedCellColor(cellPosition : Pair<Int,Int>, item: ImageButton){
+        val resource = newGame.attack(cellPosition)
         item.setBackgroundResource(resource)
     }
 }
