@@ -1,38 +1,29 @@
-package com.example.dell.battleship.engine
+package com.example.dell.battleship.screens.game
 
 import android.content.Context
+import android.util.Log
+import androidx.lifecycle.ViewModel
 import com.example.dell.battleship.R
 import com.example.dell.battleship.engine.ships.*
 import java.util.*
 
-/**
- * Created by Dell on 05/03/2018.
- */
+class GameViewModel : ViewModel(){
 
-class Game(@Transient val context: Context){
+    val numberOfRows = 10
+    val numberOfColumns = 10
+    var movesCount = 0
+    private var ships: MutableList<Ship> = mutableListOf()
+    private val random: Random = Random()
+    private var attackedCells : MutableList<Pair<Int,Int>> = mutableListOf()
 
-
-    val random: Random = Random()
-    val gameContext = context
-    var rowsNumber: Int = 0
-    var columnsNumber: Int = 0
-    var ships: MutableList<Ship> = mutableListOf()
-
-
-    fun initGame(rows:Int, columns:Int){
-        rowsNumber = rows
-        columnsNumber = columns
+    init {
+        Log.i("GameViewModel", "GameViewModel created")
         placeRandomShips()
     }
 
-    fun attack(attackedCell : Pair<Int, Int>) : Int{
-
-        for( ship in ships ){
-            if( ship.coordinates.contains( attackedCell ) ){
-                return ship.getResourceId(gameContext)
-            }
-        }
-        return R.drawable.item_missed
+    override fun onCleared() {
+        super.onCleared()
+        Log.i("GameViewModel", "GameViewModel destroyed!")
     }
 
     private fun placeRandomShips(){
@@ -45,12 +36,38 @@ class Game(@Transient val context: Context){
         placeRandomShip(Submarine())
     }
 
+    fun increaseMovesCount(){
+        movesCount++
+    }
+
+    fun saveAttackedCell(attackedCell : Pair<Int, Int>){
+        attackedCells.add(attackedCell)
+    }
+
+    fun getAttackedCellColor(attackedCell : Pair<Int, Int>, gameContext: Context) : Int{
+
+        for( ship in ships ){
+            if( ship.coordinates.contains( attackedCell ) ){
+                return ship.getResourceId(gameContext)
+            }
+        }
+        return R.drawable.item_missed
+    }
+
+    fun getCellColor(cell : Pair<Int, Int>, gameContext: Context) : Int{
+        return if(attackedCells.contains(cell)){
+            getAttackedCellColor(cell, gameContext)
+        }else{
+            R.drawable.item_drawable
+        }
+    }
+
     private fun placeRandomShip(ship : Ship){
 
         val isHorizontal: Boolean = (random.nextInt() % 2) != 0
-        val columnsBound = columnsNumber-ship.size
-        val topLeftX = getRandomCoordinate(isHorizontal,columnsBound,rowsNumber)
-        val topLeftY = getRandomCoordinate(isHorizontal,rowsNumber,columnsBound)
+        val columnsBound = numberOfColumns-ship.size
+        val topLeftX = getRandomCoordinate(isHorizontal,columnsBound,numberOfRows)
+        val topLeftY = getRandomCoordinate(isHorizontal,numberOfRows,columnsBound)
 
         var isClear = checkIfThereIsRoom(ship.size , isHorizontal , topLeftX , topLeftY)
 

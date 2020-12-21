@@ -1,4 +1,4 @@
-package com.example.dell.battleship
+package com.example.dell.battleship.screens.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import com.example.dell.battleship.R
 import com.example.dell.battleship.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment(){
