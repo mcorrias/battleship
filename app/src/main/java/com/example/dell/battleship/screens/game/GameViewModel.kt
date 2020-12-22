@@ -2,6 +2,8 @@ package com.example.dell.battleship.screens.game
 
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.dell.battleship.R
 import com.example.dell.battleship.engine.ships.*
@@ -11,13 +13,18 @@ class GameViewModel : ViewModel(){
 
     val numberOfRows = 10
     val numberOfColumns = 10
-    var movesCount = 0
+
+    private val _movesCount = MutableLiveData<Int>()
+    val movesCount: LiveData<Int>
+        get() = _movesCount
+
     private var ships: MutableList<Ship> = mutableListOf()
     private val random: Random = Random()
     private var attackedCells : MutableList<Pair<Int,Int>> = mutableListOf()
 
     init {
         Log.i("GameViewModel", "GameViewModel created")
+        _movesCount.value = 0
         placeRandomShips()
     }
 
@@ -37,7 +44,8 @@ class GameViewModel : ViewModel(){
     }
 
     fun increaseMovesCount(){
-        movesCount++
+        _movesCount.value = movesCount.value?.plus(1)
+        Log.i("GameViewModel", "moves: ${movesCount.value}")
     }
 
     fun saveAttackedCell(attackedCell : Pair<Int, Int>){

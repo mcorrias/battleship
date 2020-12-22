@@ -1,6 +1,7 @@
 package com.example.dell.battleship.screens.game
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,12 +9,12 @@ import android.widget.ImageButton
 import android.widget.TableRow
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.dell.battleship.R
 import com.example.dell.battleship.databinding.FragmentGameBinding
 
 class GameFragment : Fragment() {
-
 
     lateinit var binding: FragmentGameBinding
     private lateinit var gameViewModel: GameViewModel
@@ -25,14 +26,17 @@ class GameFragment : Fragment() {
         )
         gameViewModel = ViewModelProvider(this).get(GameViewModel::class.java)
 
-        binding.movesCountText.text = gameViewModel.movesCount.toString()
+        gameViewModel.movesCount.observe(viewLifecycleOwner, Observer {value ->
+            binding.movesCountText.text = value.toString()
+
+        })
+
         createBattleField()
 
         return binding.root
     }
 
     private fun createBattleField() {
-
         val rows = gameViewModel.numberOfRows
         val columns = gameViewModel.numberOfColumns
 
@@ -52,10 +56,9 @@ class GameFragment : Fragment() {
     }
 
     private fun attack(cellPosition: Pair<Int, Int>, item: ImageButton) {
-        gameViewModel.increaseMovesCount()
+        gameViewModel.updateMovesCount()
         gameViewModel.saveAttackedCell(cellPosition)
         changeAttackedCellColor(cellPosition, item)
-        binding.movesCountText.text = gameViewModel.movesCount.toString()
     }
 
     private fun changeAttackedCellColor(cellPosition: Pair<Int, Int>, item: ImageButton) {
