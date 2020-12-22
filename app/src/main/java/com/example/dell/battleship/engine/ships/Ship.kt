@@ -8,8 +8,14 @@ import com.example.dell.battleship.R
  */
 open class Ship() {
 
-    lateinit var typeName : String
-    var size = 0
+    protected lateinit var _typeName : String
+    val typeName : String
+        get() = _typeName
+
+    protected  var _size  = 0
+    val size :Int
+        get() = _size
+
     lateinit var coordinates: Array<Pair<Int,Int>?>
 
     fun getResourceId(context: Context): Int
