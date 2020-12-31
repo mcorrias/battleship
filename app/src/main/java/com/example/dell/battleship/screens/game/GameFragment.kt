@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.dell.battleship.R
 import com.example.dell.battleship.databinding.FragmentGameBinding
 
@@ -27,6 +28,12 @@ class GameFragment : Fragment() {
 
         binding.gameViewModel = gameViewModel
         binding.lifecycleOwner = viewLifecycleOwner
+
+        gameViewModel.eventGameFinished.observe(viewLifecycleOwner, Observer { hasFinished->
+            if(hasFinished){
+                gameFinished()
+            }
+        })
 
         createBattleField()
 
@@ -61,5 +68,11 @@ class GameFragment : Fragment() {
     private fun changeAttackedCellColor(cellPosition: Pair<Int, Int>, item: ImageButton) {
         val resource = gameViewModel.getAttackedCellColor(cellPosition,requireContext())
         item.setBackgroundResource(resource)
+    }
+
+    private fun gameFinished(){
+        val action = GameFragmentDirections.actionGameFragmentToHomeFragment()
+        findNavController().navigate(action)
+        gameViewModel.onGameFinishedComplete()
     }
 }
