@@ -1,7 +1,6 @@
 package com.example.dell.battleship.screens.game
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,10 +25,8 @@ class GameFragment : Fragment() {
         )
         gameViewModel = ViewModelProvider(this).get(GameViewModel::class.java)
 
-        gameViewModel.movesCount.observe(viewLifecycleOwner, Observer {value ->
-            binding.movesCountText.text = value.toString()
-
-        })
+        binding.gameViewModel = gameViewModel
+        binding.lifecycleOwner = viewLifecycleOwner
 
         createBattleField()
 
@@ -56,7 +53,7 @@ class GameFragment : Fragment() {
     }
 
     private fun attack(cellPosition: Pair<Int, Int>, item: ImageButton) {
-        gameViewModel.updateMovesCount()
+        gameViewModel.increaseMovesCount()
         gameViewModel.saveAttackedCell(cellPosition)
         changeAttackedCellColor(cellPosition, item)
     }

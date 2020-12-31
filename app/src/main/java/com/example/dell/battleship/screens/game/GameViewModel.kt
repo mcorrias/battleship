@@ -14,9 +14,9 @@ class GameViewModel : ViewModel(){
     val numberOfRows = 10
     val numberOfColumns = 10
 
-    private val _movesCount = MutableLiveData<Int>()
-    val movesCount: LiveData<Int>
-        get() = _movesCount
+    private val _numberOfMoves = MutableLiveData<Int>()
+    val numberOfMoves: LiveData<Int>
+        get() = _numberOfMoves
 
     private var ships: MutableList<Ship> = mutableListOf()
     private val random: Random = Random()
@@ -24,7 +24,7 @@ class GameViewModel : ViewModel(){
 
     init {
         Log.i("GameViewModel", "GameViewModel created")
-        _movesCount.value = 0
+        _numberOfMoves.value = 0
         placeRandomShips()
     }
 
@@ -44,8 +44,8 @@ class GameViewModel : ViewModel(){
     }
 
     fun increaseMovesCount(){
-        _movesCount.value = movesCount.value?.plus(1)
-        Log.i("GameViewModel", "moves: ${movesCount.value}")
+        _numberOfMoves.value = numberOfMoves.value?.plus(1)
+        Log.i("GameViewModel", "moves: ${numberOfMoves.value}")
     }
 
     fun saveAttackedCell(attackedCell : Pair<Int, Int>){
