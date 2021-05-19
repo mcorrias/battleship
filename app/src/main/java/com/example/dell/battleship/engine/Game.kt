@@ -46,7 +46,7 @@ class Game private constructor(private val rows: Int, private val colums: Int){
 
     private fun checkIfThereIsRoom(size: Int, isHorizontal: Boolean, topLeftX: Int, topLeftY: Int): Boolean {
 
-        for (i in 1..size) {
+        for (i in 0 until size) {
             val x = if (isHorizontal) topLeftX + i else topLeftX
             val y = if (isHorizontal) topLeftY else topLeftY + i
 
