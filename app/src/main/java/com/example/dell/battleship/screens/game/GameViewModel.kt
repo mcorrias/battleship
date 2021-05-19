@@ -18,7 +18,7 @@ private const val GAME_TIME_INTERVAL = 1000L
 private const val TOTAL_GAME_TIME = 60000L
 
 class GameViewModel(
-        private val timer: GameCountDownTimer = DefaultCountDownTimer(TOTAL_GAME_TIME, GAME_TIME_INTERVAL)
+        //private val timer: GameCountDownTimer = DefaultCountDownTimer(TOTAL_GAME_TIME, GAME_TIME_INTERVAL)
 ) : ViewModel() {
     val numberOfRows = 10
     val numberOfColumns = 10
@@ -35,16 +35,16 @@ class GameViewModel(
     val eventGameFinished: LiveData<Boolean>
         get() = _eventGameFinished
 
-    val currentTimeString: LiveData<String> = Transformations.map(currentTime) { time ->
-        DateUtils.formatElapsedTime(time)
-    }
+//    val currentTimeString: LiveData<String> = Transformations.map(currentTime) { time ->
+//        DateUtils.formatElapsedTime(time)
+//    }
 
 
     var game : Game
 
     init {
-        timer.attach(this)
-        timer.start()
+//        timer.attach(this)
+//        timer.start()
         Log.i("GameViewModel", "GameViewModel created")
         _numberOfMoves.value = 0
         _eventGameFinished.value = false
@@ -54,18 +54,18 @@ class GameViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        timer.cancel()
+       // timer.cancel()
         Log.i("GameViewModel", "GameViewModel destroyed!")
     }
 
-    fun tick(millisUntilFinished: Long) {
-        _currentTime.value = millisUntilFinished / GAME_TIME_INTERVAL
-    }
-
-    fun onGameFinished() {
-        _currentTime.value = GAME_OVER_TIME
-        _eventGameFinished.value = true
-    }
+//    fun tick(millisUntilFinished: Long) {
+//        _currentTime.value = millisUntilFinished / GAME_TIME_INTERVAL
+//    }
+//
+//    fun onGameFinished() {
+//        _currentTime.value = GAME_OVER_TIME
+//        _eventGameFinished.value = true
+//    }
 
     fun onGameFinishedComplete() {
         _eventGameFinished.value = false
@@ -105,43 +105,43 @@ class GameViewModel(
 
 
 
-    interface GameCountDownTimer {
-        fun attach(viewModel: GameViewModel)
-        fun start()
-        fun cancel()
-    }
+//    interface GameCountDownTimer {
+//        fun attach(viewModel: GameViewModel)
+//        fun start()
+//        fun cancel()
+//    }
 
 }
 
-open class DefaultCountDownTimer(
-        private val millisInFuture :Long ,
-        private val countDownInterval : Long) : GameViewModel.GameCountDownTimer {
-    private lateinit var timer: CountDownTimer
-
-    override fun attach(viewModel: GameViewModel) {
-        timer = object : CountDownTimer(millisInFuture, countDownInterval) {
-            override fun onFinish() {
-                viewModel.onGameFinished()
-            }
-
-            override fun onTick(millisUntilFinished: Long) {
-                viewModel.tick(millisUntilFinished)
-
-            }
-
-        }
-    }
-
-    override fun start() {
-        timer.start()
-    }
-
-    override fun cancel() {
-        timer.cancel()
-    }
-
-    fun finish(){
-        timer.onFinish()
-    }
-}
+//open class DefaultCountDownTimer(
+//        private val millisInFuture :Long ,
+//        private val countDownInterval : Long) : GameViewModel.GameCountDownTimer {
+//    private lateinit var timer: CountDownTimer
+//
+//    override fun attach(viewModel: GameViewModel) {
+//        timer = object : CountDownTimer(millisInFuture, countDownInterval) {
+//            override fun onFinish() {
+//                //viewModel.onGameFinished()
+//            }
+//
+//            override fun onTick(millisUntilFinished: Long) {
+//                viewModel.tick(millisUntilFinished)
+//
+//            }
+//
+//        }
+//    }
+//
+//    override fun start() {
+//        timer.start()
+//    }
+//
+//    override fun cancel() {
+//        timer.cancel()
+//    }
+//
+//    fun finish(){
+//        timer.onFinish()
+//    }
+//}
 

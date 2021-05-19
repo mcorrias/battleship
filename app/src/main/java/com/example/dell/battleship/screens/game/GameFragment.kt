@@ -29,10 +29,13 @@ class GameFragment : Fragment() {
 
         binding.gameViewModel = gameViewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.timeCountText.start()
 
         gameViewModel.eventGameFinished.observe(viewLifecycleOwner, Observer { hasFinished->
             if(hasFinished){
                 gameFinished()
+                val time = binding.timeCountText.text
+                binding.timeCountText.stop()
             }
         })
 
