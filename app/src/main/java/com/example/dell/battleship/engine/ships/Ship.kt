@@ -16,6 +16,10 @@ open class Ship() {
     val size :Int
         get() = _size
 
+    var hit = 0
+
+    var isSinked = size == hit
+
     lateinit var coordinates: Array<Pair<Int,Int>?>
 
     fun getResourceId(context: Context): Int

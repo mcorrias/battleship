@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TableRow
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -44,16 +45,35 @@ class GameFragment : Fragment() {
         val rows = gameViewModel.numberOfRows
         val columns = gameViewModel.numberOfColumns
 
-        for (i in 0..rows - 1) {
+        for (i in 0..rows) {
             var row = TableRow(requireContext())
-            for (j in 0..columns - 1) {
-                val cellPosition = Pair(i, j)
-                val item = ImageButton(requireContext())
-                item.setBackgroundResource(gameViewModel.getCellColor(cellPosition, requireContext()))
-                item.setOnClickListener() {
-                    attack(cellPosition, item)
+            for (j in 0..columns) {
+                if((i == 0 || j == 0) && i != j){
+                    val hintView = TextView(requireContext())
+                    if(i == 0){
+                        hintView.text = gameViewModel.game.shipCellsInColumn[j].toString()
+                    }
+                    if(j == 0){
+                        hintView.text = gameViewModel.game.shipCellsInRow[i].toString()
+                    }
+                    row.addView(hintView)
+
                 }
-                row.addView(item)
+                else if(i != 0 && j != 0) {
+                    val cellPosition = Pair(i, j)
+                    val item = ImageButton(requireContext())
+                    item.tag = "cell$i-$j"
+                    item.setBackgroundResource(gameViewModel.getCellColor(cellPosition, requireContext()))
+                    item.setOnClickListener {
+                        attack(cellPosition, item)
+                    }
+                    row.addView(item)
+                }else if(i==0 && j==0){
+                    val item = ImageButton(requireContext())
+                    item.setBackgroundResource(R.drawable.item_missed)
+                    row.addView(item)
+                }
+
             }
             binding.board.addView(row)
         }
