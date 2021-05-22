@@ -7,7 +7,14 @@ class Game private constructor(private val rows: Int, private val colums: Int){
 
     var ships: MutableList<Ship> = mutableListOf()
     private val random: Random = Random()
-    var attackedCells: MutableList<Pair<Int, Int>> = mutableListOf()
+
+    enum class CellStatus(val value : String){
+        SHIP("ship"),
+        WATER("water"),
+        UNDEFINED("undefined"), }
+
+    //var attackedCells: MutableList<Pair<Int, Int>> = mutableListOf()
+    var guessedCells: MutableMap<Pair<Int,Int>, CellStatus> = mutableMapOf()
     var shipCellsInColumn = IntArray(11)
     var shipCellsInRow = IntArray(11)
 
@@ -15,8 +22,12 @@ class Game private constructor(private val rows: Int, private val colums: Int){
         placeRandomShip(Carrier())
         placeRandomShip(Battleship())
         placeRandomShip(Cruiser())
+        placeRandomShip(Cruiser())
         placeRandomShip(Destroyer())
         placeRandomShip(Destroyer())
+        placeRandomShip(Destroyer())
+        placeRandomShip(Submarine())
+        placeRandomShip(Submarine())
         placeRandomShip(Submarine())
         placeRandomShip(Submarine())
     }

@@ -1,6 +1,8 @@
 package com.example.dell.battleship.screens.game
 
 import android.os.Bundle
+import android.os.SystemClock
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,7 +31,6 @@ class GameFragment : Fragment() {
 
         binding.gameViewModel = gameViewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.timeCountText.start()
 
         gameViewModel.eventGameFinished.observe(viewLifecycleOwner, Observer { hasFinished->
             if(hasFinished){
@@ -38,6 +39,13 @@ class GameFragment : Fragment() {
                 binding.timeCountText.stop()
             }
         })
+
+        if(gameViewModel.startTime.value == null){
+            gameViewModel.setStartTime( SystemClock.elapsedRealtime())
+        }
+
+        binding.timeCountText.base = gameViewModel.startTime.value!!
+        binding.timeCountText.start()
 
         createBattleField()
 
@@ -66,9 +74,11 @@ class GameFragment : Fragment() {
                     val cellPosition = Pair(i, j)
                     val item = ImageButton(requireContext())
                     item.tag = "cell$i-$j"
-                    item.setBackgroundResource(gameViewModel.getCellColor(cellPosition, requireContext()))
+                    var resTypeinitial = gameViewModel.getCellType(cellPosition)
+                    item.setBackgroundResource(resTypeinitial)
                     item.setOnClickListener {
-                        attack(cellPosition, item)
+                        var resTypeId = gameViewModel.guessCellType(cellPosition)
+                        item.setBackgroundResource(resTypeId)
                     }
                     row.addView(item)
                 }else if(i==0 && j==0){
@@ -82,16 +92,16 @@ class GameFragment : Fragment() {
         }
     }
 
-    private fun attack(cellPosition: Pair<Int, Int>, item: ImageButton) {
-        gameViewModel.increaseMovesCount()
-        gameViewModel.saveAttackedCell(cellPosition)
-        changeAttackedCellColor(cellPosition, item)
-    }
-
-    private fun changeAttackedCellColor(cellPosition: Pair<Int, Int>, item: ImageButton) {
-        val resource = gameViewModel.getAttackedCellColor(cellPosition,requireContext())
-        item.setBackgroundResource(resource)
-    }
+//    private fun attack(cellPosition: Pair<Int, Int>, item: ImageButton) {
+//        gameViewModel.increaseMovesCount()
+//        gameViewModel.saveAttackedCell(cellPosition)
+//        changeAttackedCellColor(cellPosition, item)
+//    }
+//
+//    private fun changeAttackedCellColor(cellPosition: Pair<Int, Int>, item: ImageButton) {
+//        val resource = gameViewModel.getAttackedCellColor(cellPosition,requireContext())
+//        item.setBackgroundResource(resource)
+//    }
 
     private fun gameFinished(){
         val action = GameFragmentDirections.actionGameFragmentToHomeFragment()
